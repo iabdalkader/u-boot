@@ -55,12 +55,12 @@
 #define CONFIG_DISPLAY_CPUINFO		1
 #define CONFIG_DISPLAY_BOARDINFO	1
 
-#define CONFIG_SYS_BOARD_REV_STR	"Rev 1.0"
+#define CONFIG_SYS_BOARD_REV_STR	"R1"
 
 /*
  * Monitor prompt
  */
-#define CONFIG_SYS_PROMPT			"STM32429-DISCO> "
+#define CONFIG_SYS_PROMPT			"OpenMV> "
 
 /*
  * We want to call the CPU specific initialization
@@ -75,11 +75,11 @@
  */
 #define CONFIG_STM32_SYS_CLK_PLL
 #define CONFIG_STM32_PLL_SRC_HSE
-#define CONFIG_STM32_HSE_HZ			(8000000)		/* 8 MHz */
-#define CONFIG_STM32_PLL_M			(8)
-#define CONFIG_STM32_PLL_N			(360)
-#define CONFIG_STM32_PLL_P			(2)
-#define CONFIG_STM32_PLL_Q			(7)
+#define CONFIG_STM32_HSE_HZ		(12000000)  /* 12 MHz */
+#define CONFIG_STM32_PLL_M		(6)
+#define CONFIG_STM32_PLL_N		(360)
+#define CONFIG_STM32_PLL_P		(4)
+#define CONFIG_STM32_PLL_Q		(15)
 
 /*
  * Number of clock ticks in 1 sec
@@ -101,6 +101,8 @@
  */
 #define CONFIG_MEM_NVM_BASE			(0x08000000)
 #define CONFIG_MEM_NVM_LEN			(2 * 1024 * 1024)
+#define CONFIG_SYS_ENVM_BASE		(CONFIG_MEM_NVM_BASE)
+#define CONFIG_SYS_ENVM_LEN		    (CONFIG_MEM_NVM_LEN)
 
 #define CONFIG_MEM_RAM_BASE			(0x20000000)
 #define CONFIG_MEM_RAM_LEN			(20 * 1024)
@@ -115,8 +117,8 @@
 /*
  * Use 1 MB at the end of the external memory for the malloc() pool
  */
-//#define CONFIG_SYS_MALLOC_EXT_BASE	(0x90600000)
-//#define CONFIG_SYS_MALLOC_EXT_LEN	(1024 * 1024)
+//#define CONFIG_SYS_MALLOC_EXT_BASE	(0xC0600000)
+//#define CONFIG_SYS_MALLOC_EXT_LEN	(1 * 1024 * 1024)
 
 /*
  * The generic code still needs CONFIG_SYS_MALLOC_LEN to calculate the base
@@ -130,16 +132,16 @@
  */
 #define CONFIG_NR_DRAM_BANKS		1
 #define CONFIG_SYS_RAM_SIZE			(8 * 1024 * 1024)
+#define CONFIG_SYS_RAM_BASE			(0xC0000000)
 
-#define CONFIG_SYS_RAM_BASE			(0x90000000)
-
-#define CONFIG_LCD
+//#define CONFIG_LCD
 #ifdef  CONFIG_LCD
+#error "lcd enabled"
 #define LCD_BPP						LCD_COLOR16
 #define CONFIG_BMP_16BPP			1
 #define CONFIG_SPLASH_SCREEN		1
 #define CONFIG_CMD_BMP
-#define CONFIG_FB_ADDR				(0x90700000)
+#define CONFIG_FB_ADDR				(0xC0700000)
 #define CONFIG_LCD_ILI9341
 #define CONFIG_LCD_ILI9341_DOUBLE_BUFFER
 #define CONFIG_SYS_WHITE_ON_BLACK
@@ -160,12 +162,11 @@
  * Serial console configuration
  */
 #define CONFIG_STM32_USART_CONSOLE
-#define CONFIG_STM32_USART_PORT			3	/* USART3 */
-#define CONFIG_STM32_USART_TX_IO_PORT	2	/* PORTC */
-#define CONFIG_STM32_USART_RX_IO_PORT	2	/* PORTC */
-#define CONFIG_STM32_USART_TX_IO_PIN	10	/* GPIO10 */
-#define CONFIG_STM32_USART_RX_IO_PIN	11	/* GPIO11 */
-
+#define CONFIG_STM32_USART_PORT		2	    /* USART2 */
+#define CONFIG_STM32_USART_TX_IO_PORT	0	/* PORTA */
+#define CONFIG_STM32_USART_TX_IO_PIN	2	/* GPIO9 */
+#define CONFIG_STM32_USART_RX_IO_PORT	0	/* PORTA */
+#define CONFIG_STM32_USART_RX_IO_PIN	3	/* GPIO10 */
 #define CONFIG_BAUDRATE					115200
 #define CONFIG_SYS_BAUDRATE_TABLE		{ 9600, 19200, 38400, 57600, 115200 }
 
@@ -194,6 +195,7 @@
  */
 #define CONFIG_SYS_PBSIZE      		(CONFIG_SYS_CBSIZE + sizeof(CONFIG_SYS_PROMPT) + 16)
 
+//#define CONFIG_SYS_ALT_MEMTEST
 #define CONFIG_SYS_MEMTEST_START	(CONFIG_SYS_RAM_BASE)
 #define CONFIG_SYS_MEMTEST_END		(CONFIG_SYS_RAM_BASE + CONFIG_SYS_RAM_SIZE)
 
@@ -246,12 +248,12 @@
 /*
  * Auto-boot sequence configuration
  */
-#define CONFIG_BOOTDELAY		0
+#define CONFIG_BOOTDELAY		3
 #define CONFIG_HOSTNAME			stm32429-disco
 #define CONFIG_BOOTARGS			"stm32_platform=stm32429-disco mem=7M "\
-								"console=ttyS2,115200n8 consoleblank=0 "\
+								"console=ttyS1,115200n8 consoleblank=0 "\
 								"root=/dev/mtdblock0 rdinit=/sbin/init "\
-								"video=vfb:enable,fbmem:0x90700000,fbsize:0x100000"
+								"video=vfb:disable,fbmem:0xC0700000,fbsize:0x100000 loglevel=8"
 #define CONFIG_BOOTCOMMAND		"run flashboot"
 
 #define CONFIG_SYS_CONSOLE_IS_IN_ENV
@@ -261,11 +263,11 @@
  * Short-cuts to some useful commands (macros)
  */
 #define CONFIG_EXTRA_ENV_SETTINGS				\
-	"loadaddr=0x90000000\0"						\
+	"loadaddr=0xC0000000\0"						\
 	"addip=setenv bootargs ${bootargs}\0"		\
 	"flashaddr=08020000\0"						\
 	"flashboot=run addip;bootm ${flashaddr}\0"	\
-	"image=uImage\0"							\
+	"image=stm32f429/uImage\0"							\
 	"stdin=serial\0"							\
 	"stdout=serial\0"							\
 	"stderr=serial\0"

@@ -60,7 +60,7 @@ int board_init(void)
  */
 int checkboard(void)
 {
-	printf("Board: STM32F429I-DISCOVERY board,%s\n",
+	printf("Board: OpenMV2 %s\n",
 		CONFIG_SYS_BOARD_REV_STR);
 
 	return 0;
@@ -76,7 +76,7 @@ int dram_init(void)
 	 */
 	gd->bd->bi_dram[0].start = CONFIG_SYS_RAM_BASE;
 	gd->bd->bi_dram[0].size  = CONFIG_SYS_RAM_SIZE;
-
+    cortex_m3_mpu_full_access();
 	return 0;
 }
 
