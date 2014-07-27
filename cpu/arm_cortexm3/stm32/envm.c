@@ -28,7 +28,6 @@
 /*
  * Flash data area definitions
  */
-#define STM32_FLASH_BASE		0x08000000
 #if defined(CONFIG_SYS_STM32F43X)
 #define STM32_FLASH_SIZE	        (1024 * 1024 * 2)
 #else

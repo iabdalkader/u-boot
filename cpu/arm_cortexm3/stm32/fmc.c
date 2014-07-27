@@ -159,15 +159,13 @@ static void ExtMemInit(void)
 int fmc_dram_init(void)
 {
     static int common_init_done = 0;
-    uint32_t *ptr, len;
     int rv = 0;
 
     if (!common_init_done) {
-        int i;
-
         /*
          * Connect GPIOs to FMC controller
          */
+        int i;
         for (i = 0; i < ARRAY_SIZE(ext_ram_fmc_gpio); i++) {
             rv = stm32f2_gpio_config(&ext_ram_fmc_gpio[i]);
             if (rv != 0)
