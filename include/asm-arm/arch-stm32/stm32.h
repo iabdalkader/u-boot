@@ -266,8 +266,10 @@ struct stm32_spi_regs
 /*
  * Serial Peripheral Interface base
  */
+#define STM32_SPI4_BASE       	(STM32_APB2PERIPH_BASE + 0x3400)
 #define STM32_SPI5_BASE       	(STM32_APB2PERIPH_BASE + 0x5000)
 #define STM32_SPI6_BASE       	(STM32_APB2PERIPH_BASE + 0x5400)
+#define STM32_SPI4             	((volatile struct stm32_spi_regs *)STM32_SPI4_BASE)
 #define STM32_SPI5				((volatile struct stm32_spi_regs *)STM32_SPI5_BASE)
 #define STM32_SPI6				((volatile struct stm32_spi_regs *)STM32_SPI6_BASE)
 

@@ -35,6 +35,11 @@ DECLARE_GLOBAL_DATA_PTR;
  */
 int board_init(void)
 {
+    /*
+     * Enable GPIO clocks
+     */
+    STM32_RCC->ahb1enr |= 0x7F;
+
 	/*
 	 * Initialize the SDRAM controller
 	 */
