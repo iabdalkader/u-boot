@@ -105,8 +105,8 @@
 #define CONFIG_SYS_ENVM_LEN		    (CONFIG_MEM_NVM_LEN)
 
 #define CONFIG_MEM_RAM_BASE			(0x20000000)
-#define CONFIG_MEM_RAM_LEN			(20 * 1024)
-#define CONFIG_MEM_RAM_BUF_LEN		(88 * 1024)
+#define CONFIG_MEM_RAM_LEN			(32 * 1024)
+#define CONFIG_MEM_RAM_BUF_LEN		(92 * 1024)
 #define CONFIG_MEM_MALLOC_LEN		(64 * 1024)
 #define CONFIG_MEM_STACK_LEN		( 4 * 1024)
 
@@ -135,17 +135,19 @@
 #define CONFIG_SYS_RAM_BASE			(0xC0000000)
 
 //#define CONFIG_LCD
-#ifdef  CONFIG_LCD
-#error "lcd enabled"
-#define LCD_BPP						LCD_COLOR16
-#define CONFIG_BMP_16BPP			1
-#define CONFIG_SPLASH_SCREEN		1
-#define CONFIG_CMD_BMP
-#define CONFIG_FB_ADDR				(0xC0700000)
-#define CONFIG_LCD_ILI9341
-#define CONFIG_LCD_ILI9341_DOUBLE_BUFFER
+#ifdef CONFIG_LCD
+#define CONFIG_LCD_ST7735
+#define CONFIG_LCD_LOGO
+//#define CONFIG_LCD_INFO
+//#define CONFIG_LCD_INFO_BELOW_LOGO
+
+#define CONFIG_BMP_16BPP
+#define LCD_BPP LCD_COLOR16
+#define CONFIG_SPLASH_SCREEN
+
+#define CONFIG_FB_ADDR  (0xC0700000)
 #define CONFIG_SYS_WHITE_ON_BLACK
-#endif
+#endif //CONFIG_LCD
 
 /*
  * Configuration of the external Flash memory
@@ -248,13 +250,14 @@
 /*
  * Auto-boot sequence configuration
  */
-#define CONFIG_BOOTDELAY		3
+#define CONFIG_BOOTDELAY		0
 #define CONFIG_HOSTNAME			stm32429-disco
-#define CONFIG_BOOTARGS			"stm32_platform=stm32429-disco mem=7M "\
-								"console=ttyS1,115200n8 consoleblank=0 "\
+#define CONFIG_BOOTARGS			"stm32_platform=stm32429-disco mem=8M "\
 								"root=/dev/mtdblock0 rdinit=/sbin/init "\
-								"video=vfb:disable,fbmem:0xC0700000,fbsize:0x100000 loglevel=8"
+								"console=ttyS1,115200n8 consoleblank=0 fbcon=rotate:1,font:MINI4x6 "\
+                                "fbtft_device.name=adafruit18 fbtft_device.busnum=3 fbtft.debug=0 fbtft_device.cs=0"
 #define CONFIG_BOOTCOMMAND		"run flashboot"
+//"video=vfb:disable,fbmem:0xC0700000,fbsize:0x100000 loglevel=8"
 
 #define CONFIG_SYS_CONSOLE_IS_IN_ENV
 #define CONFIG_SYS_CONSOLE_INFO_QUIET
